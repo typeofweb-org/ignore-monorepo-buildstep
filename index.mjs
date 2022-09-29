@@ -24,8 +24,8 @@ const workspaceDeps = resolveWorkspaceDeps(
 const workspaceDepsPaths = workspaceDeps.map(
 	(name) => workspaceSettings.workspaces[name].packagePath,
 );
-const workspaceDepsRelativePaths = workspaceDepsPaths.map((path) =>
-	Path.relative(cwd, path),
+const workspaceDepsRelativePaths = [cwd, ...workspaceDepsPaths].map(
+	(path) => Path.relative(cwd, path) || ".",
 );
 
 try {
