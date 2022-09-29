@@ -58,7 +58,8 @@ const result = await Promise.all([
 		};
 	}),
 	(async () => {
-		const pathsToIgnore = workspaceDepsRelativePaths
+		const pathsToIgnore = (await readWorkspaceDirs())
+			.map((path) => Path.relative(cwd, path))
 			.map((path) => `':!${path}'`)
 			.join(" ");
 		const relativeRoot = Path.relative(cwd, rootDir);
@@ -92,30 +93,33 @@ ${dirtyTrees.join("\n")}
  * --------------------------------------------------
  */
 
-async function readWorkspaceSettings() {
+async function readWorkspaceDirs() {
 	const workspaceSettingsPath = Path.join(rootDir, "pnpm-workspace.yaml");
 	const workspaceSettings = await readFile(workspaceSettingsPath, "utf-8");
 
-	const workspaces = (
-		await Promise.all(
-			workspaceSettings
-				.split("\n")
-				.map((line) => line.trim())
-				.filter((line) => line.startsWith("-"))
-				.map((line) => /"([^"]+)"/.exec(line)?.[1]?.trim())
-				.filter(
-					/**
-					 * @returns {x is string}
-					 */
-					(x) => typeof x === "string",
-				)
-				// @todo support exclusions?
-				.filter((glob) => !glob.startsWith("!"))
-				.map((glob) => glob.replace(/\/\*{1,2}$/, ""))
-				.map((path) => Path.join(rootDir, path))
-				.map(findPackagesInDir),
-		)
-	)
+	return (
+		workspaceSettings
+			.split("\n")
+			.map((line) => line.trim())
+			.filter((line) => line.startsWith("-"))
+			.map((line) => /"([^"]+)"/.exec(line)?.[1]?.trim())
+			.filter(
+				/**
+				 * @returns {x is string}
+				 */
+				(x) => typeof x === "string",
+			)
+			// @todo support exclusions?
+			.filter((glob) => !glob.startsWith("!"))
+			.map((glob) => glob.replace(/\/\*{1,2}$/, ""))
+			.map((path) => Path.join(rootDir, path))
+	);
+}
+
+async function readWorkspaceSettings() {
+	const workspaceDirs = await readWorkspaceDirs();
+
+	const workspaces = (await Promise.all(workspaceDirs.map(findPackagesInDir)))
 		.flat()
 		.map((w) => [w.name, w]);
 	const currentWorkspace = workspaces.find(([, w]) => w.packagePath === cwd)[1];
