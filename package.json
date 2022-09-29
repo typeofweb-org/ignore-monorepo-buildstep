@@ -23,6 +23,7 @@
 	"scripts": {
 		"test": ""
 	},
+	"private": false,
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "18.7.23",
