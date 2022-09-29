@@ -1,0 +1,49 @@
+lockfileVersion: 5.4
+
+specifiers:
+  "@types/node": 18.7.23
+  prettier: 2.7.1
+  typescript: 4.8.4
+
+devDependencies:
+  "@types/node": registry.npmjs.org/@types/node/18.7.23
+  prettier: registry.npmjs.org/prettier/2.7.1
+  typescript: registry.npmjs.org/typescript/4.8.4
+
+packages:
+  registry.npmjs.org/@types/node/18.7.23:
+    resolution:
+      {
+        integrity: sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==,
+        registry: https://registry.npmjs.com/,
+        tarball: https://registry.npmjs.org/@types/node/-/node-18.7.23.tgz,
+      }
+    name: "@types/node"
+    version: 18.7.23
+    dev: true
+
+  registry.npmjs.org/prettier/2.7.1:
+    resolution:
+      {
+        integrity: sha512-ujppO+MkdPqoVINuDFDRLClm7D78qbDt0/NR+wp5FqEZOoTNAjPHWj17QRhu7geIHJfcNhRk1XVQmF8Bp3ye+g==,
+        registry: https://registry.npmjs.com/,
+        tarball: https://registry.npmjs.org/prettier/-/prettier-2.7.1.tgz,
+      }
+    name: prettier
+    version: 2.7.1
+    engines: { node: ">=10.13.0" }
+    hasBin: true
+    dev: true
+
+  registry.npmjs.org/typescript/4.8.4:
+    resolution:
+      {
+        integrity: sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==,
+        registry: https://registry.npmjs.com/,
+        tarball: https://registry.npmjs.org/typescript/-/typescript-4.8.4.tgz,
+      }
+    name: typescript
+    version: 4.8.4
+    engines: { node: ">=4.2.0" }
+    hasBin: true
+    dev: true
