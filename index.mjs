@@ -48,8 +48,8 @@ function promiseErrorToSettled(promise) {
 	);
 }
 
-const result = await Promise.all(
-	workspaceDepsRelativePaths.map(async (path) => {
+const result = await Promise.all([
+	...workspaceDepsRelativePaths.map(async (path) => {
 		return {
 			result: await promiseErrorToSettled(
 				execAsync(`git diff "HEAD^" "HEAD" --quiet ${path}`),
@@ -57,10 +57,25 @@ const result = await Promise.all(
 			path,
 		};
 	}),
-);
+	(async () => {
+		const pathsToIgnore = workspaceDepsRelativePaths
+			.map((path) => `':!${path}'`)
+			.join(" ");
+		const relativeRoot = Path.relative(cwd, rootDir);
+		return {
+			result: await promiseErrorToSettled(
+				execAsync(
+					`git diff "HEAD^" "HEAD" --quiet -- ${relativeRoot} ${pathsToIgnore}`,
+				),
+			),
+			path: relativeRoot,
+		};
+	})(),
+]);
 const dirtyTrees = result
 	.filter((r) => r.result.status === "rejected")
-	.map((d) => Path.relative(rootDir, Path.resolve(cwd, d.path)));
+	.map((d) => "/" + Path.relative(rootDir, Path.resolve(cwd, d.path)))
+	.sort();
 if (dirtyTrees.length > 0) {
 	console.log(
 		`
