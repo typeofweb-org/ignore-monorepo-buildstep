@@ -20,6 +20,9 @@
 	"bugs": {
 		"url": "https://github.com/typeofweb/ignore-monorepo-buildstep/issues"
 	},
+	"scripts": {
+		"test": ""
+	},
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "18.7.23",
