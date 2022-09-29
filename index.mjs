@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { existsSync } from "node:fs";
 import { readFile, readdir, stat } from "node:fs/promises";
 import Path from "node:path";
