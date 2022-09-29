@@ -61,7 +61,7 @@ const result = await Promise.all(
 const dirtyTrees = result
 	.filter((r) => r.result.status === "rejected")
 	.map((d) => Path.relative(rootDir, Path.resolve(cwd, d.path)));
-if (dirtyTrees) {
+if (dirtyTrees.length > 0) {
 	console.log(
 		`
 Tree modified at:
