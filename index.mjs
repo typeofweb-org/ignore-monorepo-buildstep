@@ -24,17 +24,18 @@ const workspaceDeps = resolveWorkspaceDeps(
 const workspaceDepsPaths = workspaceDeps.map(
 	(name) => workspaceSettings.workspaces[name].packagePath,
 );
-const workspaceDepsRelativePaths = [rootDir, ...workspaceDepsPaths].map(
-	(path) => Path.relative(cwd, path),
+const workspaceDepsRelativePaths = workspaceDepsPaths.map((path) =>
+	Path.relative(cwd, path),
 );
 
 try {
 	await Promise.all(
 		workspaceDepsRelativePaths.map((path) =>
-			execAsync(`git diff HEAD^ HEAD --quiet ${path}`),
+			execAsync(`git diff "HEAD^" "HEAD" --quiet ${path}`),
 		),
 	);
-} catch {
+} catch (err) {
+	console.log(err);
 	process.exit(1);
 }
 process.exit(0);
