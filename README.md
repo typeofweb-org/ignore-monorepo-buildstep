@@ -2,7 +2,10 @@
 
 A package that adds monorepo support for Vercel's "Ignore build-step" setting. Small, fast, with 0 external dependencies.
 
+## The problem
 By default, when working in a monorepo, each push triggers Vercel to rebuild all the projects even when changes were introduced only to some of them. It takes time and blocks the build pipeline for your team. Thanks to `@typeofweb/ignore-monorepo-buildstep`, this is no longer a problem – Vercel becomes smarter and only rebuilds what needs building!
+
+`@typeofweb/ignore-monorepo-buildstep` helps you save time and money.
 
 ## Example setup
 
