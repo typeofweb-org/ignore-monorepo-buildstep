@@ -31,8 +31,8 @@
 		"allowUnusedLabels": true /* Disable error reporting for unused labels. */,
 		"allowUnreachableCode": true /* Disable error reporting for unreachable code. */,
 
-		"skipLibCheck": true, /* Skip type checking all .d.ts files. */
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
 		"outDir": "dist"
 	},
-	"include": ["src"],
+	"include": ["src"]
 }
