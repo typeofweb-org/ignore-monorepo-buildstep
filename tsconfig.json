@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"incremental": true /* Save .tsbuildinfo files to allow for incremental compilation of projects. */,
 		"target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-		"module": "ESNext" /* Specify what module code is generated. */,
+		"module": "NodeNext" /* Specify what module code is generated. */,
 		"resolveJsonModule": true /* Enable importing .json files. */,
 		"allowJs": true /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
 		"checkJs": true /* Enable error reporting in type-checked JavaScript files. */,
@@ -31,6 +31,8 @@
 		"allowUnusedLabels": true /* Disable error reporting for unused labels. */,
 		"allowUnreachableCode": true /* Disable error reporting for unreachable code. */,
 
-		"skipLibCheck": true /* Skip type checking all .d.ts files. */
-	}
+		"skipLibCheck": true /* Skip type checking all .d.ts files. */,
+		"outDir": "dist"
+	},
+	"include": ["src"]
 }

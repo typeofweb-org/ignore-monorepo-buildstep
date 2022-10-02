@@ -2,8 +2,8 @@
 	"name": "@typeofweb/ignore-monorepo-buildstep",
 	"version": "0.2.2",
 	"description": "Ignore Vercel buildstep in a pnpm monorepo",
-	"main": "index.mjs",
-	"bin": "index.mjs",
+	"main": "dist/index.mjs",
+	"bin": "dist/index.mjs",
 	"type": "module",
 	"keywords": [
 		"Vercel",
@@ -11,7 +11,7 @@
 		"monorepo"
 	],
 	"files": [
-		"index.mjs",
+		"dist",
 		"README.md",
 		"LICENSE.md",
 		"docs"
@@ -24,7 +24,13 @@
 		"url": "https://github.com/typeofweb/ignore-monorepo-buildstep/issues"
 	},
 	"scripts": {
-		"test": ""
+		"build": "rm -rf dist && tsc",
+		"dev": "rm -rf dist && tsc -w",
+		"test": "",
+		"prepare": "husky install"
+	},
+	"lint-staged": {
+		"*.{ts,js,md,json,yaml,yml}": "prettier --write"
 	},
 	"private": false,
 	"publishConfig": {
@@ -33,6 +39,8 @@
 	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "18.7.23",
+		"husky": "8.0.1",
+		"lint-staged": "13.0.3",
 		"prettier": "2.7.1",
 		"typescript": "4.8.4"
 	}
