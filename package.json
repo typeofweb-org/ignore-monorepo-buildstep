@@ -1,6 +1,6 @@
 {
 	"name": "@typeofweb/ignore-monorepo-buildstep",
-	"version": "0.2.2",
+	"version": "0.3.0",
 	"description": "Ignore Vercel buildstep in a pnpm monorepo",
 	"main": "dist/index.mjs",
 	"bin": "dist/index.mjs",
