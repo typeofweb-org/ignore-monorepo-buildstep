@@ -26,7 +26,7 @@
 	"scripts": {
 		"build": "rm -rf dist && tsc",
 		"dev": "rm -rf dist && tsc -w",
-		"test": "",
+		"test": "ts-node-test src/utils.test.ts ",
 		"prepare": "husky install"
 	},
 	"lint-staged": {
