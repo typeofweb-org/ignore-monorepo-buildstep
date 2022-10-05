@@ -26,7 +26,7 @@
 	"scripts": {
 		"build": "rm -rf dist && tsc",
 		"dev": "rm -rf dist && tsc -w",
-		"test": "",
+		"test": "ts-node-test src/utils.test.ts ",
 		"prepare": "husky install"
 	},
 	"lint-staged": {
@@ -42,6 +42,8 @@
 		"husky": "8.0.1",
 		"lint-staged": "13.0.3",
 		"prettier": "2.7.1",
+		"ts-node-test": "0.2.0",
 		"typescript": "4.8.4"
-	}
+	},
+	"packageManager": "pnpm@7.13.1"
 }
