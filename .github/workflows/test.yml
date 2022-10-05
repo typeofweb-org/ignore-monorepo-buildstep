@@ -1,0 +1,22 @@
+name: Tests
+on: [pull_request]
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.10"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm --version && pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Test
+        run: pnpm run test
