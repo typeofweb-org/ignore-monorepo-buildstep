@@ -30,7 +30,7 @@
 		"prepare": "husky install"
 	},
 	"lint-staged": {
-		"*.{ts,js,md,json,yaml,yml}": "prettier --write"
+		"*.{mts,cts,ts,mjs,csj,js,md,json,yaml,yml}": "prettier --write"
 	},
 	"private": false,
 	"publishConfig": {
