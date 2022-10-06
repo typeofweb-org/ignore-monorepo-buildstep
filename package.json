@@ -11,7 +11,7 @@
 		"monorepo"
 	],
 	"files": [
-		"dist",
+		"dist/*.js",
 		"README.md",
 		"LICENSE.md",
 		"docs"
