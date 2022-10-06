@@ -2,7 +2,7 @@
 
 import { existsSync } from "node:fs";
 import Path from "node:path";
-import { exec } from "node:child_process";
+import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { promiseErrorToSettled } from "./utils.js";
 import {
@@ -10,7 +10,7 @@ import {
 	readWorkspaceSettings,
 	resolveWorkspaceDeps,
 } from "./pnpmWorkspace.js";
-const execAsync = promisify(exec);
+const execFileAsync = promisify(execFile);
 
 const cwd = process.cwd();
 
@@ -41,7 +41,7 @@ const result = await Promise.all([
 	...workspaceDepsRelativePaths.map(async (path) => {
 		return {
 			result: await promiseErrorToSettled(
-				execAsync(`git diff "HEAD^" "HEAD" --quiet ${path}`),
+				execFileAsync(`git`, [`diff`, `HEAD^`, `HEAD`, `--quiet`, path]),
 			),
 			path,
 		};
@@ -49,14 +49,20 @@ const result = await Promise.all([
 	(async () => {
 		const pathsToIgnore = (await readWorkspaceDirs({ rootDir, cwd }))
 			.map((path) => Path.relative(cwd, path))
-			.map((path) => `':!${path}'`)
-			.join(" ");
+			.map((path) => `:^${path}`);
 		const relativeRoot = Path.relative(cwd, rootDir);
+
 		return {
 			result: await promiseErrorToSettled(
-				execAsync(
-					`git diff "HEAD^" "HEAD" --quiet -- ${relativeRoot} ${pathsToIgnore}`,
-				),
+				execFileAsync(`git`, [
+					`diff`,
+					`HEAD^`,
+					`HEAD`,
+					`--quiet`,
+					`--`,
+					relativeRoot,
+					...pathsToIgnore,
+				]),
 			),
 			path: relativeRoot,
 		};
