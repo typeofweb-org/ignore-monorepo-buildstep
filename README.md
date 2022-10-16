@@ -36,6 +36,12 @@ npx @typeofweb/ignore-monorepo-buildstep
 
 ![Ignore Build Step settings in Vercel](./docs/vercel_settings.png)
 
+By default, `ignore-monorepo-buildstep` will compare `HEAD^` and `HEAD`. You can override this and use an env variable exposed by Vercel:
+
+```
+npx @typeofweb/ignore-monorepo-buildstep $VERCEL_GIT_PREVIOUS_SHA
+```
+
 ### Result
 
 When any changes are introduced to `packages/common`, both apps `a` and `b` will be built:
