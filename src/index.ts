@@ -2,6 +2,8 @@
 
 import { existsSync } from "node:fs";
 import Path from "node:path";
+import { parseArgs } from "node:util";
+
 import { promiseErrorToSettled } from "./utils.js";
 import {
 	readWorkspaceDirs,
@@ -9,16 +11,36 @@ import {
 	resolveWorkspaceDeps,
 } from "./pnpmWorkspace.js";
 import { compare } from "./git.js";
+import { debug } from "./debug.js";
 
 const cwd = process.cwd();
 
-const [_node, _bin, gitFromPointer = "HEAD^", gitToPointer = "HEAD"] =
-	process.argv;
+const [_node, _bin, ...args] = process.argv;
+
+const configuration = parseArgs({
+	args,
+	allowPositionals: true,
+	options: {
+		verbose: {
+			type: "boolean",
+			default: false,
+		},
+	},
+});
+
+const log = debug(configuration.values.verbose || false);
+
+const [gitFromPointer = "HEAD^", gitToPointer = "HEAD"] =
+	configuration.positionals;
+
+log({ gitFromPointer, gitToPointer });
 
 const rootDir = cwd
 	.split(Path.sep)
 	.map((_, idx) => Path.join(cwd, "../".repeat(idx)))
 	.find((path) => existsSync(Path.join(path, "pnpm-workspace.yaml")));
+
+log({ rootDir });
 
 if (!rootDir) {
 	throw new Error(`Couldn't determine rootDir!`);
@@ -34,9 +56,13 @@ const workspaceDepsPaths = workspaceDeps
 	.map((name) => workspaceSettings.workspaces[name]?.packagePath)
 	.filter((path): path is string => typeof path === "string");
 
+log({ workspaceDepsPaths });
+
 const workspaceDepsRelativePaths = [cwd, ...workspaceDepsPaths].map(
 	(path) => Path.relative(cwd, path) || ".",
 );
+
+log({ workspaceDepsRelativePaths });
 
 const result = await Promise.all([
 	...workspaceDepsRelativePaths.map(async (path) => {
@@ -73,6 +99,10 @@ const result = await Promise.all([
 ]);
 
 const dirtyTrees = result
+	.map((r) => {
+		log(r);
+		return r;
+	})
 	.filter((r) => r.result.status === "rejected")
 	.map((d) => "/" + Path.relative(rootDir, Path.resolve(cwd, d.path)))
 	.sort();
