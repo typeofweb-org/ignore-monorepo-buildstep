@@ -2,7 +2,6 @@
 
 import { existsSync } from "node:fs";
 import Path from "node:path";
-import { parseArgs } from "node:util";
 
 import { promiseErrorToSettled } from "./utils.js";
 import {
@@ -12,6 +11,7 @@ import {
 } from "./pnpmWorkspace.js";
 import { compare } from "./git.js";
 import { debug } from "./debug.js";
+import { parseArgs } from "./parseArgs.js";
 
 const cwd = process.cwd();
 
@@ -28,7 +28,7 @@ const configuration = parseArgs({
 	},
 });
 
-const log = debug(configuration.values.verbose || false);
+const log = debug(configuration.values.verbose);
 
 const [gitFromPointer = "HEAD^", gitToPointer = "HEAD"] =
 	configuration.positionals;

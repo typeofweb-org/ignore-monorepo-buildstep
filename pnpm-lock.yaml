@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  "@types/node": 18.7.23
+  "@types/node": 18.11.0
   husky: 8.0.1
   lint-staged: 13.0.3
   prettier: 2.7.1
@@ -9,11 +9,11 @@ specifiers:
   typescript: 4.8.4
 
 devDependencies:
-  "@types/node": registry.npmjs.org/@types/node/18.7.23
+  "@types/node": registry.npmjs.org/@types/node/18.11.0
   husky: registry.npmjs.org/husky/8.0.1
   lint-staged: registry.npmjs.org/lint-staged/13.0.3
   prettier: registry.npmjs.org/prettier/2.7.1
-  ts-node-test: registry.npmjs.org/ts-node-test/0.2.0_gbhfbbeqrol7fxixnzbkbuanxe
+  ts-node-test: registry.npmjs.org/ts-node-test/0.2.0_o6ib7qqltxpe7qrskddglns2ga
   typescript: registry.npmjs.org/typescript/4.8.4
 
 packages:
@@ -112,15 +112,15 @@ packages:
     version: 1.0.3
     dev: true
 
-  registry.npmjs.org/@types/node/18.7.23:
+  registry.npmjs.org/@types/node/18.11.0:
     resolution:
       {
-        integrity: sha512-DWNcCHolDq0ZKGizjx2DZjR/PqsYwAcYUJmfMWqtVU2MBMG5Mo+xFZrhGId5r/O5HOuMPyQEcM6KUBp5lBZZBg==,
+        integrity: sha512-IOXCvVRToe7e0ny7HpT/X9Rb2RYtElG1a+VshjwT00HxrM2dWBApHQoqsI6WiY7Q03vdf2bCrIGzVrkF/5t10w==,
         registry: https://registry.npmjs.com/,
-        tarball: https://registry.npmjs.org/@types/node/-/node-18.7.23.tgz,
+        tarball: https://registry.npmjs.org/@types/node/-/node-18.11.0.tgz,
       }
     name: "@types/node"
-    version: 18.7.23
+    version: 18.11.0
     dev: true
 
   registry.npmjs.org/acorn-walk/8.2.0:
@@ -1133,7 +1133,7 @@ packages:
       is-number: registry.npmjs.org/is-number/7.0.0
     dev: true
 
-  registry.npmjs.org/ts-node-test/0.2.0_gbhfbbeqrol7fxixnzbkbuanxe:
+  registry.npmjs.org/ts-node-test/0.2.0_o6ib7qqltxpe7qrskddglns2ga:
     resolution:
       {
         integrity: sha512-d3tMATFBY+ZmuEzXRRJ87MAHdh5vkefe+irpdy1DodVT2AHEf0z3tCDyV0O/tzH0oyQqeJXB3Y1B2emh5snFiA==,
@@ -1148,7 +1148,7 @@ packages:
     peerDependencies:
       typescript: ^4.0.0
     dependencies:
-      ts-node: registry.npmjs.org/ts-node/10.9.1_gbhfbbeqrol7fxixnzbkbuanxe
+      ts-node: registry.npmjs.org/ts-node/10.9.1_o6ib7qqltxpe7qrskddglns2ga
       typescript: registry.npmjs.org/typescript/4.8.4
     transitivePeerDependencies:
       - "@swc/core"
@@ -1156,7 +1156,7 @@ packages:
       - "@types/node"
     dev: true
 
-  registry.npmjs.org/ts-node/10.9.1_gbhfbbeqrol7fxixnzbkbuanxe:
+  registry.npmjs.org/ts-node/10.9.1_o6ib7qqltxpe7qrskddglns2ga:
     resolution:
       {
         integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==,
@@ -1183,7 +1183,7 @@ packages:
       "@tsconfig/node12": registry.npmjs.org/@tsconfig/node12/1.0.11
       "@tsconfig/node14": registry.npmjs.org/@tsconfig/node14/1.0.3
       "@tsconfig/node16": registry.npmjs.org/@tsconfig/node16/1.0.3
-      "@types/node": registry.npmjs.org/@types/node/18.7.23
+      "@types/node": registry.npmjs.org/@types/node/18.11.0
       acorn: registry.npmjs.org/acorn/8.8.0
       acorn-walk: registry.npmjs.org/acorn-walk/8.2.0
       arg: registry.npmjs.org/arg/4.1.3
