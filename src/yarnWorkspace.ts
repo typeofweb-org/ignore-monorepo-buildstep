@@ -1,13 +1,13 @@
 import { readFile, readdir } from "node:fs/promises";
 import Path from "node:path";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileExist, readJson } from "./utils.js";
-import { Ctx, Workspace, PackageJson } from "./types.js";
+import { Ctx, Workspace, WorkspaceSettings, PackageJson } from "./types.js";
 
-export async function readWorkspaceSettings({ rootDir, cwd }: Ctx): Promise<{
-	workspaces: Record<string, Workspace>;
-	currentWorkspace: Workspace;
-}> {
+export async function readWorkspaceSettings({
+	rootDir,
+	cwd,
+}: Ctx): Promise<WorkspaceSettings> {
 	const workspaceDirs = await readWorkspaceDirs({ rootDir, cwd });
 
 	const workspaces = (await Promise.all(workspaceDirs.map(findPackagesInDir)))
@@ -25,10 +25,10 @@ export async function readWorkspaceSettings({ rootDir, cwd }: Ctx): Promise<{
 		throw new Error(`Workspace must have name: ${cwd}`);
 	}
 
-	return {
+	return withoutNodeModules({
 		workspaces: Object.fromEntries(workspaces),
 		currentWorkspace: { ...currentWorkspace, name },
-	};
+	});
 }
 
 export function resolveWorkspaceDeps(
@@ -48,15 +48,12 @@ export function resolveWorkspaceDeps(
 }
 
 export async function readWorkspaceDirs({ rootDir }: Ctx) {
-	const workspaceSettingsPath = Path.join(rootDir, "pnpm-workspace.yaml");
+	const workspaceSettingsPath = Path.join(rootDir, "package.json");
 	const workspaceSettings = await readFile(workspaceSettingsPath, "utf-8");
+	const workspaces: string[] = JSON.parse(workspaceSettings).workspaces || [];
 
 	return (
-		workspaceSettings
-			.split("\n")
-			.map((line) => line.trim())
-			.filter((line) => line.startsWith("-"))
-			.map((line) => /"([^"]+)"/.exec(line)?.[1]?.trim())
+		workspaces
 			.filter((glob): glob is string => typeof glob === "string")
 			// @todo support exclusions?
 			.filter((glob) => !glob.startsWith("!"))
@@ -91,12 +88,36 @@ function getWorkspaceDeps(pkg: PackageJson) {
 	const deps = [
 		...Object.entries(pkg.dependencies ?? {}),
 		...Object.entries(pkg.devDependencies ?? {}),
-	]
-		.filter(([, version]) => version.startsWith("workspace:"))
-		.map(([name]) => name);
+	].map(([name]) => name);
 	return [...new Set(deps)];
 }
 
+function withoutNodeModules(settings: WorkspaceSettings): WorkspaceSettings {
+	const allowedDependencies = Object.keys(settings.workspaces);
+
+	function withoutNodeModulesDeps(workspace: Workspace): Workspace {
+		return {
+			...workspace,
+			dependsOn: workspace.dependsOn.filter((pkgName) =>
+				allowedDependencies.includes(pkgName),
+			),
+		};
+	}
+
+	const result: WorkspaceSettings = {
+		currentWorkspace: withoutNodeModulesDeps(settings.currentWorkspace),
+		workspaces: {},
+	};
+	for (const [name, workspace] of Object.entries(settings.workspaces)) {
+		result.workspaces[name] = withoutNodeModulesDeps(workspace);
+	}
+	return result;
+}
+
 export function isRootDir(path: string) {
-	return existsSync(Path.join(path, "pnpm-workspace.yaml"));
+	const packageJsonPath = Path.join(path, "package.json");
+	if (!existsSync(packageJsonPath)) return false;
+	const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
+	if (packageJson.workspaces) return true;
+	return false;
 }

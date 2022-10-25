@@ -14,3 +14,8 @@ export type Workspace = {
 	packagePath: string;
 	dependsOn: string[];
 };
+
+export type WorkspaceSettings = {
+	workspaces: Record<string, Workspace>;
+	currentWorkspace: Workspace;
+};
