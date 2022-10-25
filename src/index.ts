@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 
-import { existsSync } from "node:fs";
 import Path from "node:path";
 
 import { promiseErrorToSettled } from "./utils.js";
-import {
-	readWorkspaceDirs,
-	readWorkspaceSettings,
-	resolveWorkspaceDeps,
-} from "./pnpmWorkspace.js";
+import * as pnpm from "./pnpmWorkspace.js";
+import * as yarn from "./yarnWorkspace.js";
 import { compare } from "./git.js";
 import { debug } from "./debug.js";
 import { parseArgs } from "./parseArgs.js";
+import { PackageManager } from "./types.js";
+import { detectPackageManager } from "./detectPackageManager.js";
 
 const cwd = process.cwd();
 
@@ -30,6 +28,17 @@ const configuration = parseArgs({
 
 const log = debug(configuration.values.verbose);
 
+const packageManager: PackageManager = detectPackageManager(cwd);
+
+log({ packageManager });
+
+const {
+	readWorkspaceDirs,
+	readWorkspaceSettings,
+	resolveWorkspaceDeps,
+	isRootDir,
+} = packageManager === "pnpm" ? pnpm : yarn;
+
 const [gitFromPointer = "HEAD^", gitToPointer = "HEAD"] =
 	configuration.positionals;
 
@@ -38,7 +47,7 @@ log({ gitFromPointer, gitToPointer });
 const rootDir = cwd
 	.split(Path.sep)
 	.map((_, idx) => Path.join(cwd, "../".repeat(idx)))
-	.find((path) => existsSync(Path.join(path, "pnpm-workspace.yaml")));
+	.find((path) => isRootDir(path));
 
 log({ rootDir });
 
@@ -47,10 +56,15 @@ if (!rootDir) {
 }
 
 const workspaceSettings = await readWorkspaceSettings({ rootDir, cwd });
+
+log(workspaceSettings);
+
 const workspaceDeps = resolveWorkspaceDeps(
 	workspaceSettings.workspaces,
 	workspaceSettings.currentWorkspace,
 );
+
+log({ workspaceDeps });
 
 const workspaceDepsPaths = workspaceDeps
 	.map((name) => workspaceSettings.workspaces[name]?.packagePath)
