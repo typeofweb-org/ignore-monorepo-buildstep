@@ -2,12 +2,12 @@ import { readFile, readdir } from "node:fs/promises";
 import Path from "node:path";
 import { existsSync } from "node:fs";
 import { fileExist, readJson } from "./utils.js";
-import { Ctx, Workspace, PackageJson } from "./types.js";
+import { Ctx, Workspace, PackageJson, WorkspaceSettings } from "./types.js";
 
-export async function readWorkspaceSettings({ rootDir, cwd }: Ctx): Promise<{
-	workspaces: Record<string, Workspace>;
-	currentWorkspace: Workspace;
-}> {
+export async function readWorkspaceSettings({
+	rootDir,
+	cwd,
+}: Ctx): Promise<WorkspaceSettings> {
 	const workspaceDirs = await readWorkspaceDirs({ rootDir, cwd });
 
 	const workspaces = (await Promise.all(workspaceDirs.map(findPackagesInDir)))

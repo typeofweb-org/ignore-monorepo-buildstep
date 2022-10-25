@@ -8,6 +8,8 @@ import * as yarn from "./yarnWorkspace.js";
 import { compare } from "./git.js";
 import { debug } from "./debug.js";
 import { parseArgs } from "./parseArgs.js";
+import { PackageManager } from "./types.js";
+import { detectPackageManager } from "./detectPackageManager.js";
 
 const cwd = process.cwd();
 
@@ -21,21 +23,21 @@ const configuration = parseArgs({
 			type: "boolean",
 			default: false,
 		},
-		yarn: {
-			type: "boolean",
-			default: false,
-		},
 	},
 });
+
+const log = debug(configuration.values.verbose);
+
+const packageManager: PackageManager = detectPackageManager(cwd);
+
+log({ packageManager });
 
 const {
 	readWorkspaceDirs,
 	readWorkspaceSettings,
 	resolveWorkspaceDeps,
 	isRootDir,
-} = configuration.values.yarn ? yarn : pnpm;
-
-const log = debug(configuration.values.verbose);
+} = packageManager === "pnpm" ? pnpm : yarn;
 
 const [gitFromPointer = "HEAD^", gitToPointer = "HEAD"] =
 	configuration.positionals;

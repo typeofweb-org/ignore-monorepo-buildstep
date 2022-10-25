@@ -60,6 +60,3 @@ Moreover, deployment statuses are reported as successful even when builds are sk
 Then, it proceeds to check whether the given package or any of its dependencies were modified since the last commit with the use of `git diff "HEAD^" "HEAD" --quiet`.
 
 Currently, only `pnpm` and `yarn` workspaces are supported but more is on the roadmap.
-
-### Yarn workspaces
-If you are using `yarn` workspaces pass `--yarn` flag

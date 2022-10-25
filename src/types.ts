@@ -19,3 +19,5 @@ export type WorkspaceSettings = {
 	workspaces: Record<string, Workspace>;
 	currentWorkspace: Workspace;
 };
+
+export type PackageManager = "yarn" | "npm" | "pnpm";
